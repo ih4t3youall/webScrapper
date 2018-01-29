@@ -65,6 +65,7 @@ public class RenderEngine {
 
 	public static void renderDocument(String selector) {
 		String selection = RenderSelection.getSelectedSelector();
+
 		switch (selection) {
 		case "attr":
 			String attr = SystemContext.getDocument().attr(selector);
@@ -80,6 +81,7 @@ public class RenderEngine {
 		case "selector":
 			Elements select = SystemContext.getDocument().select(selector);
 			MainView.clearText();
+			SystemContext.setElements(select);
 			select.stream().forEach((element) -> {
 
 				MainView.appendText(element.toString());
@@ -95,15 +97,31 @@ public class RenderEngine {
 		String selection = RenderSelection.getSelectedSelector();
 		switch (selection) {
 		case "attr":
-			String attr = SystemContext.getDocument().attr(selector);
+
 			MainView.clearText();
-			MainView.setText(attr);
+
+			SystemContext.getElements().stream().forEach((element) -> {
+
+				String attr = element.attr(selector);
+
+				MainView.appendText(attr);
+
+			});
 			break;
 		case "getById":
-			Element elementById = SystemContext.getDocument().getElementById(selector);
-			SystemContext.setElement(elementById);
+			Elements elements = SystemContext.getElements();
 			MainView.clearText();
-			MainView.setText(elementById.toString());
+			Elements elementsAux = new Elements();
+
+			elements.stream().forEach((element) -> {
+
+				Element elementById = element.getElementById("selector");
+				MainView.appendText(elementById.toString());
+				elementsAux.add(elementById);
+
+			});
+			JOptionPane.showMessageDialog(null, "Elements where saved !");
+			SystemContext.setElements(elementsAux);
 			break;
 		case "selector":
 			Elements select = SystemContext.getDocument().select(selector);
