@@ -85,7 +85,7 @@ public class MainView extends JFrame {
 		connectToHost.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
 		menu.add(connectToHost);
 
-		JMenuItem menuitem = new JMenuItem("unmenu");
+		JMenuItem menuitem = new JMenuItem("scrap Menu");
 		menuitem.addActionListener(new ActionListener() {
 
 			@Override
@@ -95,6 +95,16 @@ public class MainView extends JFrame {
 			}
 		});
 		menu.add(menuitem);
+		JMenuItem debugMenu = new JMenuItem("debug Menu");
+		debugMenu.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new DebugView();
+
+			}
+		});
+		menu.add(debugMenu);
 		// Listeners
 		connectToHost.addActionListener(new ConnectToHostListener(urlToConnect));
 

@@ -8,6 +8,7 @@ import org.jsoup.select.Elements;
 
 import ar.com.sourceSistemas.webScrapping.SystemContext;
 import ar.com.sourceSistemas.webScrapping.domain.HtmlGetter;
+import ar.com.sourceSistemas.webScrapping.views.DebugView;
 import ar.com.sourceSistemas.webScrapping.views.MainView;
 import ar.com.sourceSistemas.webScrapping.views.RenderSelection;
 
@@ -28,12 +29,14 @@ public class RenderEngine {
 			JOptionPane.showMessageDialog(null, "you cant do this the first time!");
 		} else {
 			MainView.clearText();
+			DebugView.setText("Produces Strings");
 			SystemContext.getElements().stream().forEach((element) -> {
 
 				String selected = element.attr(selector);
+
+				DebugView.setText(selected);
 				MainView.appendText(selected);
 			});
-
 		}
 	}
 
@@ -42,6 +45,7 @@ public class RenderEngine {
 			Elements elements = SystemContext.getDocument().select(selector);
 			MainView.setText(elements.toString());
 			SystemContext.setElements(elements);
+			DebugView.setText("Produces elements");
 			firstTime = false;
 		}
 	}
@@ -51,14 +55,20 @@ public class RenderEngine {
 		if (firstTime) {
 			JOptionPane.showMessageDialog(null, "you cant do this the first time!");
 		} else {
-
+			DebugView.setText("Produce elemnts");
+			Elements elementsAux = new Elements();
 			SystemContext.getElements().stream().forEach((element) -> {
 				Element selected = element.getElementById(selector);
+				elementsAux.add(selected);
+				DebugView.setText(selected.toString());
 				MainView.appendText(selected.toString());
 
 			}
 
 			);
+
+			DebugView.setText("Old elements overriden.");
+			SystemContext.setElements(elementsAux);
 
 		}
 	}
@@ -70,11 +80,15 @@ public class RenderEngine {
 		case "attr":
 			String attr = SystemContext.getDocument().attr(selector);
 			MainView.clearText();
+			DebugView.setText("renderDocument attr: " + attr);
+			DebugView.setText("No System Context variable modified.");
 			MainView.setText(attr);
 			break;
 		case "getById":
 			Element elementById = SystemContext.getDocument().getElementById(selector);
 			SystemContext.setElement(elementById);
+			DebugView.setText("SystemContext.Element has been modified");
+			DebugView.setText("Document getById: " + elementById);
 			MainView.clearText();
 			MainView.setText(elementById.toString());
 			break;
@@ -82,6 +96,8 @@ public class RenderEngine {
 			Elements select = SystemContext.getDocument().select(selector);
 			MainView.clearText();
 			SystemContext.setElements(select);
+			DebugView.setText("Document selector.");
+			DebugView.setText("SystemContext elements has been modified.");
 			select.stream().forEach((element) -> {
 
 				MainView.appendText(element.toString());
@@ -99,7 +115,8 @@ public class RenderEngine {
 		case "attr":
 
 			MainView.clearText();
-
+			DebugView.setText("elements attr");
+			DebugView.setText("No SystemContext variable has been modified.");
 			SystemContext.getElements().stream().forEach((element) -> {
 
 				String attr = element.attr(selector);
@@ -112,6 +129,8 @@ public class RenderEngine {
 			Elements elements = SystemContext.getElements();
 			MainView.clearText();
 			Elements elementsAux = new Elements();
+			DebugView.setText("Elements getById");
+			DebugView.setText("SystemContext elements has been modified");
 
 			elements.stream().forEach((element) -> {
 
@@ -126,6 +145,9 @@ public class RenderEngine {
 		case "selector":
 			Elements select = SystemContext.getDocument().select(selector);
 			MainView.clearText();
+			SystemContext.setElements(select);
+			DebugView.setText("Elements selector");
+			DebugView.setText("Elements has been modified");
 			select.stream().forEach((element) -> {
 
 				MainView.appendText(element.toString());
