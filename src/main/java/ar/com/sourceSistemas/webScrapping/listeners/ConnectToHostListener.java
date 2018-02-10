@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 
 import ar.com.sourceSistemas.webScrapping.domain.HtmlGetter;
 import ar.com.sourceSistemas.webScrapping.helper.UrlHelper;
+import ar.com.sourceSistemas.webScrapping.presistence.Persistence;
+import ar.com.sourceSistemas.webScrapping.presistence.Record;
 import ar.com.sourceSistemas.webScrapping.render.RenderEngine;
 
 public class ConnectToHostListener implements ActionListener {
@@ -31,6 +33,8 @@ public class ConnectToHostListener implements ActionListener {
 
 			logger.info("valid URL: " + urlToConnect);
 
+			Record record = new Record("Document", urlToConnect);
+			Persistence.addRecord(record);
 			new RenderEngine(new HtmlGetter(urlToConnect));
 		} else {
 

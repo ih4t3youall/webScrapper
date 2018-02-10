@@ -10,6 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import ar.com.sourceSistemas.webScrapping.presistence.Persistence;
+import ar.com.sourceSistemas.webScrapping.presistence.Record;
 import ar.com.sourceSistemas.webScrapping.render.RenderEngine;
 
 public class RenderSelection extends JFrame {
@@ -56,15 +58,21 @@ public class RenderSelection extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String selector = textField.getText();
-
+				Record record;
 				switch (whosSelectedObject()) {
 				case "Document":
+					record = new Record("Document", selector);
+					Persistence.addRecord(record);
 					RenderEngine.renderDocument(selector);
 					break;
 				case "elements":
+					record = new Record("elements", selector);
+					Persistence.addRecord(record);
 					RenderEngine.renderElements(selector);
 					break;
 				case "element":
+					record = new Record("element", selector);
+					Persistence.addRecord(record);
 					RenderEngine.renderElement(selector);
 					break;
 				}

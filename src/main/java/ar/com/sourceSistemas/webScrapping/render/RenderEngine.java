@@ -139,6 +139,7 @@ public class RenderEngine {
 				elementsAux.add(elementById);
 
 			});
+
 			JOptionPane.showMessageDialog(null, "Elements where saved !");
 			SystemContext.setElements(elementsAux);
 			break;
