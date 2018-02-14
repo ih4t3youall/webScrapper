@@ -13,8 +13,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
+import ar.com.sourceSistemas.webScrapping.listeners.RecoverListener;
 import ar.com.sourceSistemas.webScrapping.listeners.SaveListener;
-import ar.com.sourceSistemas.webScrapping.presistence.Persistence;
 
 public class DebugView extends JFrame {
 
@@ -69,14 +69,7 @@ public class DebugView extends JFrame {
 		SaveListener saveListener = new SaveListener();
 		save.addActionListener(saveListener);
 
-		recover.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Persistence.recover();
-
-			}
-		});
+		recover.addActionListener(new RecoverListener());
 
 		browser.addActionListener(new ActionListener() {
 

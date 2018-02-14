@@ -66,6 +66,8 @@ public class MainView extends JFrame {
 		this.add(panel);
 		this.repaint();
 		this.repaint(1);
+		new DebugView();
+		new RenderSelection();
 
 	}
 

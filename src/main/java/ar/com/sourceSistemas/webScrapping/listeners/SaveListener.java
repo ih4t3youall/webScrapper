@@ -11,7 +11,7 @@ public class SaveListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
+		Persistence.forlderExists();
 		String fileName = JOptionPane.showInputDialog(null, "insert a file name.");
 		Persistence.persist(fileName);
 

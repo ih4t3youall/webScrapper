@@ -16,13 +16,7 @@ import ar.com.sourceSistemas.webScrapping.views.MainView;
 public class Persistence {
 
 	private static List<Record> records = new LinkedList<Record>();
-	private static String folderPath;
-
-	public Persistence() {
-
-		folderPath = System.getProperty("user.home") + "/" + "webScrapper";
-
-	}
+	private static String folderPath = System.getProperty("user.home") + "/" + "webScrapper/";
 
 	public static void addRecord(Record record) {
 		records.add(record);
@@ -32,14 +26,19 @@ public class Persistence {
 	public static void persist(String fileName) {
 
 		try {
-			FileOutputStream f = new FileOutputStream(new File(folderPath + fileName));
+			File file = new File(folderPath + fileName);
+			file.createNewFile();
+			FileOutputStream f = new FileOutputStream(file);
+
 			ObjectOutputStream o = new ObjectOutputStream(f);
 
 			// Write objects to file
+			DebugView.appendText("saving to file");
 			o.writeObject(records);
 
 			o.close();
 			f.close();
+			DebugView.appendText("file saved");
 
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found");
@@ -51,7 +50,7 @@ public class Persistence {
 
 	@SuppressWarnings("unchecked")
 	public static void recover(String fileName) {
-
+		records.clear();
 		FileInputStream fi;
 		try {
 			fi = new FileInputStream(new File(folderPath + fileName));
@@ -76,8 +75,19 @@ public class Persistence {
 
 	}
 
-	public String[] getFileList() {
-		return new File(folderPath).list();
+	public static String[] listDirectory() {
+		String[] files = new File(folderPath).list();
+		String[] filesAux = new String[files.length];
+		int counter = 0;
+		for (int i = 0; i < files.length; i++) {
+			if (files[i].indexOf(".") == -1) {
+
+				filesAux[counter] = files[i];
+				counter++;
+			}
+
+		}
+		return filesAux;
 
 	}
 
@@ -90,6 +100,12 @@ public class Persistence {
 			return false;
 
 		}
+	}
+
+	public static List<Record> getRecords() {
+
+		return records;
+
 	}
 
 }

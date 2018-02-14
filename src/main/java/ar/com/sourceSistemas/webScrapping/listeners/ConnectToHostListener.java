@@ -7,10 +7,6 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 
-import ar.com.sourceSistemas.webScrapping.domain.HtmlGetter;
-import ar.com.sourceSistemas.webScrapping.helper.UrlHelper;
-import ar.com.sourceSistemas.webScrapping.presistence.Persistence;
-import ar.com.sourceSistemas.webScrapping.presistence.Record;
 import ar.com.sourceSistemas.webScrapping.render.RenderEngine;
 
 public class ConnectToHostListener implements ActionListener {
@@ -25,23 +21,23 @@ public class ConnectToHostListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
+		/*
+		 * String host = JOptionPane.showInputDialog("Url");
+		 * logger.info("host to connect: " + host); host = UrlHelper.formatUrl(host); if
+		 * (UrlHelper.isPageValid(host)) { urlToConnect = host;
+		 * 
+		 * logger.info("valid URL: " + urlToConnect);
+		 * 
+		 * Record record = new Record("Document", urlToConnect);
+		 * Persistence.addRecord(record); new RenderEngine(new
+		 * HtmlGetter(urlToConnect)); } else {
+		 * 
+		 * logger.error("the url is invalid: " + host); urlToConnect = null;
+		 * 
+		 * }
+		 */
 		String host = JOptionPane.showInputDialog("Url");
-		logger.info("host to connect: " + host);
-		host = UrlHelper.formatUrl(host);
-		if (UrlHelper.isPageValid(host)) {
-			urlToConnect = host;
-
-			logger.info("valid URL: " + urlToConnect);
-
-			Record record = new Record("Document", urlToConnect);
-			Persistence.addRecord(record);
-			new RenderEngine(new HtmlGetter(urlToConnect));
-		} else {
-
-			logger.error("the url is invalid: " + host);
-			urlToConnect = null;
-
-		}
+		RenderEngine.connectToHost(host);
 
 	}
 

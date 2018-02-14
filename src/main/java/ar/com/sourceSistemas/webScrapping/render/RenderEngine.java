@@ -8,6 +8,9 @@ import org.jsoup.select.Elements;
 
 import ar.com.sourceSistemas.webScrapping.SystemContext;
 import ar.com.sourceSistemas.webScrapping.domain.HtmlGetter;
+import ar.com.sourceSistemas.webScrapping.helper.UrlHelper;
+import ar.com.sourceSistemas.webScrapping.presistence.Persistence;
+import ar.com.sourceSistemas.webScrapping.presistence.Record;
 import ar.com.sourceSistemas.webScrapping.views.DebugView;
 import ar.com.sourceSistemas.webScrapping.views.MainView;
 import ar.com.sourceSistemas.webScrapping.views.RenderSelection;
@@ -172,6 +175,54 @@ public class RenderEngine {
 			SystemContext.getElement().select(selector);
 			break;
 		}
+
+	}
+
+	public static void connectToHost(String host) {
+		String urlToConnect;
+		host = UrlHelper.formatUrl(host);
+		if (UrlHelper.isPageValid(host)) {
+			urlToConnect = host;
+
+			Record record = new Record("Document", urlToConnect);
+			Persistence.addRecord(record);
+			new RenderEngine(new HtmlGetter(urlToConnect));
+		} else {
+
+			urlToConnect = null;
+
+		}
+
+	}
+
+	public static void renderRecoveredFile() {
+		Persistence.getRecords().stream().forEach((record) -> {
+
+			if (record.getElement().equals("Document")) {
+				DebugView.appendText("Document");
+				if (record.getAction().indexOf("http") != -1) {
+
+					DebugView.appendText("url");
+					connectToHost(record.getAction());
+				} else {
+
+					DebugView.appendText("action: " + record.getAction());
+					renderDocument(record.getAction());
+				}
+
+			} else if (record.getElement().equals("element")) {
+
+				DebugView.appendText("element");
+				renderElement(record.getAction());
+
+				DebugView.appendText("Action: " + record.getAction());
+			} else if (record.getElement().equals("elements")) {
+				DebugView.appendText("elements");
+				renderElements(record.getAction());
+				DebugView.appendText("Action: " + record.getAction());
+			}
+
+		});
 
 	}
 
